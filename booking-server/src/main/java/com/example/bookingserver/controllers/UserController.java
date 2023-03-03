@@ -2,8 +2,9 @@ package com.example.bookingserver.controllers;
 
 import com.example.bookingserver.dto.UserDto;
 import com.example.bookingserver.exceptions.UserNotFoundException;
+import com.example.bookingserver.models.LoginResponse;
 import com.example.bookingserver.models.User;
-import com.example.bookingserver.service.user.UserService;
+import com.example.bookingserver.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +36,15 @@ public class UserController {
     }
 
     @PostMapping("/auth/login")
-    public String loginUser(@RequestBody UserDto userDto) {
-        // TODO!!!
-        userService.loginUser(userDto);
-        return "Successfully got user with email.";
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody UserDto userDto) {
+        String jwt = userService.loginUser(userDto);
+        if (jwt == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else {
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setJwt(jwt);
+            return ResponseEntity.ok(loginResponse);
+        }
     }
 
     @GetMapping("/user/{id}")

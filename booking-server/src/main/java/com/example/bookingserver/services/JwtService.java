@@ -1,4 +1,4 @@
-package com.example.bookingserver.service;
+package com.example.bookingserver.services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

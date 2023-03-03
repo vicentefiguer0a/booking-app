@@ -1,4 +1,4 @@
-package com.example.bookingserver.service.user;
+package com.example.bookingserver.services.user;
 
 import com.example.bookingserver.dto.UserDto;
 import com.example.bookingserver.models.User;
@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService {
     User registerUser(UserDto userDto);
-    User loginUser(UserDto userDto);
+    String loginUser(UserDto userDto);
     List<User> getAllUsers();
     Optional<User> getUserById(long id);
     User getUserByEmail(String email);

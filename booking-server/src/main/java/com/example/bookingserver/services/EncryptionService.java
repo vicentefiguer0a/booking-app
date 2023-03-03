@@ -1,4 +1,4 @@
-package com.example.bookingserver.service;
+package com.example.bookingserver.services;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
