@@ -39,4 +39,10 @@ public class JwtService {
                 .withIssuer(issuer)
                 .sign(algorithm);
     }
+
+    public String getEmail(String jwtToken) {
+        return JWT.decode(jwtToken)
+                .getClaim(EMAIL_KEY)
+                .asString();
+    }
 }

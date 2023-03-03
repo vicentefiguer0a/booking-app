@@ -1,5 +1,6 @@
 package com.example.bookingserver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +20,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
