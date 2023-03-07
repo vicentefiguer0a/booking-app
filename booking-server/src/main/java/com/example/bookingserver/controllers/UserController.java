@@ -4,6 +4,7 @@ import com.example.bookingserver.dto.UserDto;
 import com.example.bookingserver.exceptions.UserNotFoundException;
 import com.example.bookingserver.models.LoginResponse;
 import com.example.bookingserver.models.User;
+import com.example.bookingserver.services.EncryptionService;
 import com.example.bookingserver.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,16 +14,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(allowedHeaders = "*", origins = "http://localhost:5173")
 public class UserController {
 
     private UserService userService;
+    private EncryptionService encryptionService;
 
     @Autowired
-    private UserController(UserService userService) {
+    private UserController(UserService userService, EncryptionService encryptionService) {
         this.userService = userService;
+        this.encryptionService = encryptionService;
     }
 
     @PostMapping("/register")
@@ -39,11 +43,21 @@ public class UserController {
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody UserDto userDto) {
         String jwt = userService.loginUser(userDto);
+        LoginResponse loginResponse = new LoginResponse();
         if (jwt == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setJwt(jwt);
+            Optional<User> userToLogin = Optional.ofNullable(userService.getUserByEmail(userDto.getEmail()));
+            if (userToLogin.isPresent()) {
+                // If user with email provided exist in database, store in user object to compare passwords.
+                User user = userToLogin.get();
+                if (encryptionService.verifyPassword(userDto.getPassword(), user.getPassword())) {
+                    loginResponse.setFirstName(user.getFirstName());
+                    loginResponse.setLastName(user.getLastName());
+                    loginResponse.setEmail(user.getEmail());
+                    loginResponse.setJwt(jwt);
+                }
+            }
             return ResponseEntity.ok(loginResponse);
         }
     }
