@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import UserService from '../services/UserService';
+import AuthService from '../services/AuthService';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        UserService.registerUser(user);
+        AuthService.registerUser(user);
         navigate("/auth/login");
     }
 
