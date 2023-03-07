@@ -17,9 +17,11 @@ const Login = () => {
     }
 
     const handleLogin = (e) => {
+        // TODO: Login form validation.
         e.preventDefault();
         AuthService.loginUser(user);
         setLoading(true);
+        // If credentials are invalid, prompt user to try again.
         setTimeout(() => {
             navigate("/");
             window.location.reload();

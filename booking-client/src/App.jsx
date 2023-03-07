@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Landing from "./components/Landing";
 import Register from "./components/Register";
+import Profile from "./components/Profile";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
           <Route index path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/auth/login" element={<Login />} />
+          <Route path="/account/:subpage?" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </div>
