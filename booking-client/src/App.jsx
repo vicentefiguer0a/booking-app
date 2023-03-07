@@ -12,13 +12,13 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route index element={<Landing />} />
+          <Route index path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/auth/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>
-  )
+  );
 }
 
 export default App;
