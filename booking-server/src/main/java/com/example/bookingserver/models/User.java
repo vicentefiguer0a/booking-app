@@ -3,6 +3,8 @@ package com.example.bookingserver.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -23,6 +25,10 @@ public class User {
     @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @Column(name = "accommodations")
+    private List<Accommodation> accommodations;
 
     // Constructors
     public User() {}

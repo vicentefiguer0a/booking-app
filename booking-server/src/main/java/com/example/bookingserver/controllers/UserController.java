@@ -52,6 +52,7 @@ public class UserController {
                 // If user with email provided exist in database, store in user object to compare passwords.
                 User user = userToLogin.get();
                 if (encryptionService.verifyPassword(userDto.getPassword(), user.getPassword())) {
+                    loginResponse.setUserId(user.getId());
                     loginResponse.setFirstName(user.getFirstName());
                     loginResponse.setLastName(user.getLastName());
                     loginResponse.setEmail(user.getEmail());

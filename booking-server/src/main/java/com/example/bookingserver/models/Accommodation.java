@@ -2,7 +2,6 @@ package com.example.bookingserver.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -34,18 +33,23 @@ public class Accommodation {
     private String extraInfo;
 
     @Column(name = "check_in_time", nullable = false)
-    private LocalTime checkIn;
+    private String checkIn;
 
     @Column(name = "check_out_time", nullable = false)
-    private LocalTime checkOut;
+    private String checkOut;
 
     @Column(name = "number_of_guests", nullable = false)
     private int guests;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @Column(name = "owner", nullable = false)
+    private User owner;
+
     // Constructor
     public Accommodation() {}
 
-    public Accommodation(String title, String address, List<String> photos, String description, List<String> perks, String extraInfo, LocalTime checkIn, LocalTime checkOut, int guests) {
+    public Accommodation(String title, String address, List<String> photos, String description, List<String> perks, String extraInfo, String checkIn, String checkOut, int guests, User owner) {
         this.title = title;
         this.address = address;
         this.photos = photos;
@@ -55,6 +59,7 @@ public class Accommodation {
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.guests = guests;
+        this.owner = owner;
     }
 
     // Getters & Setters
@@ -114,19 +119,19 @@ public class Accommodation {
         this.extraInfo = extraInfo;
     }
 
-    public LocalTime getCheckIn() {
+    public String getCheckIn() {
         return checkIn;
     }
 
-    public void setCheckIn(LocalTime checkIn) {
+    public void setCheckIn(String checkIn) {
         this.checkIn = checkIn;
     }
 
-    public LocalTime getCheckOut() {
+    public String getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(LocalTime checkOut) {
+    public void setCheckOut(String checkOut) {
         this.checkOut = checkOut;
     }
 
@@ -136,5 +141,13 @@ public class Accommodation {
 
     public void setGuests(int guests) {
         this.guests = guests;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }
