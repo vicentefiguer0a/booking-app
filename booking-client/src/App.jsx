@@ -17,6 +17,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/account/:subpage?" element={<Profile />} />
+          <Route path="/account/:subpage/:action" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </div>
