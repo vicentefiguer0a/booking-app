@@ -19,7 +19,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().disable();
+        http.cors().and().csrf().disable();
         // Running instance of JwtRequestFilter before AuthorizationFilter is run.
         http.addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http.authorizeHttpRequests()

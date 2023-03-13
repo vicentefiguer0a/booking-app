@@ -1,9 +1,15 @@
 package com.example.bookingserver.services.accommodation;
 
 import com.example.bookingserver.models.Accommodation;
+import com.example.bookingserver.models.AccommodationImage;
 import com.example.bookingserver.repository.AccommodationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
@@ -29,5 +35,20 @@ public class AccommodationServiceImpl implements AccommodationService {
         accommodationToSave.setGuests(accommodation.getGuests());
         // TODO: Create user object to save with accommodation object, with user id attached to request.
         return accommodationRepository.save(accommodationToSave);
+    }
+
+    @Override
+    public Set<AccommodationImage> uploadImages(MultipartFile[] multipartFiles) throws IOException {
+        Set<AccommodationImage> accommodationImages = new HashSet<>();
+        for (MultipartFile file: multipartFiles) {
+            // Creating new AccommodationImage object.
+            AccommodationImage accommodationImage = new AccommodationImage(
+                    file.getOriginalFilename(),
+                    file.getContentType(),
+                    file.getBytes()
+            );
+            accommodationImages.add(accommodationImage);
+        }
+        return accommodationImages;
     }
 }

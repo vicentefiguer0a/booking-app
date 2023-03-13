@@ -3,6 +3,7 @@ package com.example.bookingserver.models;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "accommodations")
@@ -18,15 +19,12 @@ public class Accommodation {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "photos")
-    @ElementCollection
-    private List<String> photos;
-
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "perks", nullable = false)
     @ElementCollection
+    @CollectionTable(name = "accommodation_perks", joinColumns = {@JoinColumn(name = "id")})
+    @Column(name = "perks")
     private List<String> perks;
 
     @Column(name = "extra_info")
@@ -43,16 +41,25 @@ public class Accommodation {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    @Column(name = "owner", nullable = false)
     private User owner;
+
+//    @JoinTable(name = "accommodation_images",
+//            joinColumns = {
+//                @JoinColumn(name = "accommodation_id")
+//            },
+//            inverseJoinColumns = {
+//                @JoinColumn(name = "image_id")
+//            }
+//    )
+    @OneToMany(mappedBy = "accommodation", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AccommodationImage> accommodationImages;
 
     // Constructor
     public Accommodation() {}
 
-    public Accommodation(String title, String address, List<String> photos, String description, List<String> perks, String extraInfo, String checkIn, String checkOut, int guests, User owner) {
+    public Accommodation(String title, String address, String description, List<String> perks, String extraInfo, String checkIn, String checkOut, int guests, User owner, Set<AccommodationImage> accommodationImages) {
         this.title = title;
         this.address = address;
-        this.photos = photos;
         this.description = description;
         this.perks = perks;
         this.extraInfo = extraInfo;
@@ -60,6 +67,7 @@ public class Accommodation {
         this.checkOut = checkOut;
         this.guests = guests;
         this.owner = owner;
+        this.accommodationImages = accommodationImages;
     }
 
     // Getters & Setters
@@ -85,14 +93,6 @@ public class Accommodation {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public List<String> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
     }
 
     public String getDescription() {
@@ -149,5 +149,13 @@ public class Accommodation {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public Set<AccommodationImage> getAccommodationImages() {
+        return accommodationImages;
+    }
+
+    public void setAccommodationImages(Set<AccommodationImage> accommodationImages) {
+        this.accommodationImages = accommodationImages;
     }
 }
