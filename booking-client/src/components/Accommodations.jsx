@@ -3,42 +3,35 @@ import { Link, useParams } from "react-router-dom";
 import AccommodationPerks from "./AccommodationPerks";
 
 const Accommodations = () => {
-    // TODO: Fix perks array for request.
     const {action} = useParams();
 
-    // const [title, setTitle] = useState("");
-    // const [address, setAddress] = useState("");
-    // const [addedPhotos, setAddedPhotos] = useState([]);
-    // const [description, setDescription] = useState("");
-    // const [perks, setPerks] = useState([]);
-    // const [extraInfo, setExtraInfo] = useState("");
-    // const [checkIn, setCheckIn] = useState("");
-    // const [checkOut, setCheckOut] = useState("");
-    // const [guests, setGuests] = useState(1);
+    const [title, setTitle] = useState("");
+    const [address, setAddress] = useState("");
+    const [addedPhotos, setAddedPhotos] = useState([]);
+    const [description, setDescription] = useState("");
+    const [perks, setPerks] = useState([]);
+    const [extraInfo, setExtraInfo] = useState("");
+    const [checkIn, setCheckIn] = useState("");
+    const [checkOut, setCheckOut] = useState("");
+    const [guests, setGuests] = useState(1);
 
-    const [accommodation, setAccommodation] = useState({
-        id: "",
-        title: "",
-        address: "",
-        addedPhotos: [],
-        description: "",
-        perks: [],
-        extraInfo: "",
-        checkIn: "",
-        checkOut: "",
-        guests: 1,
-    });
-
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setAccommodation({...accommodation, [e.target.name]: value});
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const accommodation = {
+            title: title,
+            address: address,
+            addedPhotos: addedPhotos,
+            description: description,
+            perks: perks,
+            extraInfo: extraInfo,
+            checkIn: checkIn,
+            checkOut: checkOut,
+            guests: guests
+        }
+
         console.log(accommodation);
     }
-
 
     
     return (
@@ -54,7 +47,7 @@ const Accommodations = () => {
                 </div>
             )}
             {action === "add" && (
-                <div>
+                <div className="mx-28 my-14">
                     <form>
                         <div>
                             <label className="block mt-3 text-xl">Title</label>
@@ -62,8 +55,8 @@ const Accommodations = () => {
                             <input
                                 type="text"
                                 name="title"
-                                value={accommodation.title}
-                                onChange={(e) => handleChange(e)}
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                                 placeholder="Example: Gorgeous Loft Near Downtown"
                                 className="rounded-lg w-full border my-2 p-2"
                             />
@@ -75,8 +68,8 @@ const Accommodations = () => {
                             <input
                                 type="text"
                                 name="address"
-                                value={accommodation.address}
-                                onChange={(e) => handleChange(e)}
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
                                 placeholder="Full address"
                                 className="rounded-lg w-full border my-2 p-2"
                             />
@@ -86,13 +79,26 @@ const Accommodations = () => {
                             <label className="block mt-3 text-xl">Photos</label>
                             <p className="text-gray-400 text-xs">The more photos, the better.</p>
                             <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                                <button className="flex justify-center items-center border bg-transparent rounded-2xl py-3 gap-1">
+                                <label className="cursor-pointer flex justify-center items-center border bg-transparent rounded-2xl py-3 gap-1">
+                                    <input
+                                        name="images"
+                                        type="file"
+                                        multiple
+                                        className="hidden"
+                                        accept="image/png , image/jpeg, image/webp"
+                                        onChange={(e) => setAddedPhotos(e.target.files)} 
+                                    />
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                                     </svg>
                                     Upload
-                                </button>
+                                </label>
                             </div>
+                            {addedPhotos.map((file) => (
+                                <p key={file.name}>
+                                    {file.name}
+                                </p>
+                            ))}
                         </div>
 
                         <div className="my-8">
@@ -101,8 +107,8 @@ const Accommodations = () => {
                             <textarea
                                 type="text"
                                 name="description"
-                                value={accommodation.description}
-                                onChange={(e) => handleChange(e)}
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                                 rows={8}
                                 placeholder="Description"
                                 className="rounded-lg w-full border my-2 p-2"
@@ -113,7 +119,7 @@ const Accommodations = () => {
                             <label className="block mt-3 text-xl">Perks</label>
                             <p className="text-gray-400 text-xs">Select all perks that come with the accommodation.</p>
                             <div className="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mt-3">
-                                <AccommodationPerks selected={perks} />
+                                <AccommodationPerks selected={perks} onChange={setPerks} />
                             </div>
                         </div>
 
@@ -122,8 +128,8 @@ const Accommodations = () => {
                             <p className="text-gray-400 text-xs">Accommodation rules, standards, etc.</p>
                             <textarea
                                 name="extraInfo"
-                                value={accommodation.extraInfo}
-                                onChange={(e) => handleChange(e)}
+                                value={extraInfo}
+                                onChange={(e) => setExtraInfo(e.target.value)}
                                 rows={6}
                                 className="rounded-lg w-full border my-2 p-2"
                             />
@@ -139,8 +145,8 @@ const Accommodations = () => {
                                     <input
                                         type="text"
                                         name="checkIn"
-                                        value={accommodation.checkIn}
-                                        onChange={(e) => handleChange(e)}
+                                        value={checkIn}
+                                        onChange={(e) => setCheckIn(e.target.value)}
                                         placeholder="11:30 am"
                                         className="rounded-lg w-full border my-2 p-2"
                                     />
@@ -150,8 +156,8 @@ const Accommodations = () => {
                                     <input
                                         type="text"
                                         name="checkOut"
-                                        value={accommodation.checkOut}
-                                        onChange={(e) => handleChange(e)}
+                                        value={checkOut}
+                                        onChange={(e) => setCheckOut(e.target.value)}
                                         placeholder="12:00 pm"
                                         className="rounded-lg w-full border my-2 p-2"
                                     />
@@ -161,8 +167,8 @@ const Accommodations = () => {
                                     <input
                                         type="text"
                                         name="guests"
-                                        value={accommodation.guests}
-                                        onChange={(e) => handleChange(e)}
+                                        value={guests}
+                                        onChange={(e) => setGuests(e.target.value)}
                                         placeholder="5"
                                         className="rounded-lg w-full border my-2 p-2"
                                     />
