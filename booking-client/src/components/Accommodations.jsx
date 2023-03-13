@@ -29,8 +29,6 @@ const Accommodations = () => {
             checkOut: checkOut,
             guests: guests
         }
-
-        console.log(accommodation);
     }
 
     
@@ -94,11 +92,6 @@ const Accommodations = () => {
                                     Upload
                                 </label>
                             </div>
-                            {addedPhotos.map((file) => (
-                                <p key={file.name}>
-                                    {file.name}
-                                </p>
-                            ))}
                         </div>
 
                         <div className="my-8">
